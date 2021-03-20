@@ -24,5 +24,27 @@ export default () => {
         ['translateX']: 150,
       },
     },
+    onOpenBottomSheet: {
+      0: {
+        ['opacity']: 0,
+      },
+      0.8: {
+        ['opacity']: 0.5,
+      },
+      1: {
+        ['opacity']: 1,
+      },
+    },
+    onCloseBottomSheet: {
+      0: {
+        ['opacity']: 1,
+      },
+      0.8: {
+        ['opacity']: 0.5,
+      },
+      1: {
+        ['opacity']: 0,
+      },
+    },
   });
 };

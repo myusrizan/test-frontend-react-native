@@ -1,17 +1,20 @@
 //#region IMPORT
 // IMPORT MODULE
-import React, {useState} from 'react';
-import {SafeAreaView, StatusBar, View} from 'react-native';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
+import {SafeAreaView, StatusBar, Text, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 // IMPORT COMPONENT
 import {MHeader, MSwitch} from '../../../../components';
+import MChips from '../../../../components/MChips';
 import {ITheme} from '../../../../config/Theme.config';
+// IMPORT CONFIG
+import {filterListSymptom} from '../../utils';
 import getStyles from './HomeScreen.page.style';
 import {
-  HomeScreenChooseSymptom,
   HomeScreenReasonInput,
-  HomeScreenSelectedSymptom,
   HomeScreenSelectPatient,
+  HomeScreenSymptom,
 } from './sections';
 
 //#endregion
@@ -19,7 +22,8 @@ import {
 const HomeScreen: React.FC = () => {
   //#region GENERAL
   const theme = (useTheme() as unknown) as ITheme;
-  const style = getStyles(theme);
+  const styles = getStyles(theme);
+
   //#endregion
 
   //#region ADD PATIENT
@@ -60,53 +64,140 @@ const HomeScreen: React.FC = () => {
     }
   };
   //#endregion
+  //#region BOTTOM SHEET
+  const snapPoints = useMemo(() => ['25%', '60%'], []);
+  //MODAL SYMPTOM
+  const bottomSheetModalSymptomRef = useRef<BottomSheetModal>(null);
+  const handlePresentModalSymptomPress = useCallback(() => {
+    bottomSheetModalSymptomRef.current?.present();
+  }, []);
+  //MODAL TIME
+  const bottomSheetModalTimeRef = useRef<BottomSheetModal>(null);
+  const handlePresentModalTimePress = useCallback(() => {
+    bottomSheetModalTimeRef.current?.present();
+  }, []);
+  //#endregion
 
   return (
-    <SafeAreaView style={style.container}>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor={theme.colors.surface}
-      />
-      <MHeader
-        title="Book a Doctor"
-        onBack={() => {
-          console.log('clicked');
-        }}
-        onAction={() => console.log('action')}
-      />
-      <View style={style.switchContainer}>
-        <MSwitch labelA="Doctor" labelB="Video Consult" />
-      </View>
-      <View style={style.section}>
-        <HomeScreenSelectPatient
-          listPatient={listPatient}
-          selectedPatient={selectedPatient}
-          handleAddPatient={handleAddPatient}
-        />
-      </View>
-      <View style={style.section}>
-        <HomeScreenReasonInput
-          onClickReason={() => console.log('click reason')}
-          onClickTime={() => console.log('click time')}
-        />
-      </View>
-      {selectedSymptom && selectedSymptom.length > 0 && (
-        <View style={style.section}>
-          <HomeScreenSelectedSymptom
-            handleRemoveSymptom={handleRemoveSymptom}
-            listSymptom={listSymptom}
-            selectedSymptom={selectedSymptom}
+    <BottomSheetModalProvider>
+      <SafeAreaView style={styles.wrapper}>
+        <View style={styles.container}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor={theme.colors.surface}
+          />
+          <MHeader
+            title="Book a Doctor"
+            onBack={() => {
+              console.log('clicked');
+            }}
+            onAction={() => console.log('action')}
+          />
+          <View style={styles.switchContainer}>
+            <MSwitch labelA="Doctor" labelB="Video Consult" />
+          </View>
+          <View style={styles.section}>
+            <HomeScreenSelectPatient
+              listPatient={listPatient}
+              selectedPatient={selectedPatient}
+              handleAddPatient={handleAddPatient}
+            />
+          </View>
+          <View style={styles.section}>
+            <HomeScreenReasonInput
+              onClickReason={handlePresentModalSymptomPress}
+              onClickTime={handlePresentModalTimePress}
+            />
+          </View>
+          {selectedSymptom && selectedSymptom.length > 0 && (
+            <View style={styles.section}>
+              <HomeScreenSymptom
+                title="Selected symptom and reason:"
+                onClickSymptom={handleRemoveSymptom}
+                filteredListSymptom={filterListSymptom(
+                  selectedSymptom,
+                  listSymptom,
+                  true,
+                )}
+                chipIcon="check"
+                chipLabelColor={theme.colors.surface}
+                chipStyle={styles.selectedSymptomChip}
+              />
+            </View>
+          )}
+          <View style={styles.section}>
+            <HomeScreenSymptom
+              title="Choose your symptom and reason:"
+              onClickSymptom={handleAddSymptom}
+              filteredListSymptom={filterListSymptom(
+                selectedSymptom,
+                listSymptom,
+              )}
+              chipIcon="plus"
+              chipLabelColor={theme.colors.primary}
+              chipStyle={styles.listSymptomChip}
+            />
+          </View>
+        </View>
+
+        <View style={styles.action}>
+          <MChips
+            label="Next"
+            labelColor={theme.colors.surface}
+            containerStyle={styles.actionButton}
+            onClick={() => console.log('next clicked')}
           />
         </View>
-      )}
-      <View style={style.section}>
-        <HomeScreenChooseSymptom
-          handleAddSymptom={handleAddSymptom}
-          listSymptom={listSymptom}
-          selectedSymptom={selectedSymptom}
-        />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+
+      <BottomSheetModal
+        ref={bottomSheetModalSymptomRef}
+        backdropComponent={() => <View style={styles.backdrop} />}
+        index={1}
+        snapPoints={snapPoints}>
+        <View style={styles.container}>
+          {selectedSymptom && selectedSymptom.length > 0 && (
+            <View style={styles.section}>
+              <HomeScreenSymptom
+                title="Selected symptom:"
+                onClickSymptom={handleRemoveSymptom}
+                filteredListSymptom={filterListSymptom(
+                  selectedSymptom,
+                  listSymptom,
+                  true,
+                )}
+                chipIcon="check"
+                chipLabelColor={theme.colors.surface}
+                chipStyle={styles.selectedSymptomChip}
+              />
+            </View>
+          )}
+          <View style={styles.section}>
+            <HomeScreenSymptom
+              title="Choose your symptom:"
+              onClickSymptom={handleAddSymptom}
+              filteredListSymptom={filterListSymptom(
+                selectedSymptom,
+                listSymptom,
+              )}
+              chipIcon="plus"
+              chipLabelColor={theme.colors.primary}
+              chipStyle={styles.listSymptomChip}
+            />
+          </View>
+        </View>
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        backdropComponent={() => <View style={styles.backdrop} />}
+        ref={bottomSheetModalTimeRef}
+        index={1}
+        snapPoints={snapPoints}>
+        <View style={styles.container}>
+          <Text>Awesime 🎉</Text>
+        </View>
+      </BottomSheetModal>
+    </BottomSheetModalProvider>
   );
 };
 

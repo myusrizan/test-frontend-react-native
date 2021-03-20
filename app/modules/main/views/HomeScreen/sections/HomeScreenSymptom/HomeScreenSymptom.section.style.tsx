@@ -5,7 +5,6 @@ interface Style {
   container: ViewStyle;
   containerSymptom: ViewStyle;
   title: TextStyle;
-  chip: ViewStyle;
   chipContainer: ViewStyle;
 }
 
@@ -22,7 +21,6 @@ const getStyles = (theme?: ITheme) => {
       fontSize: 16,
       color: theme.colors.text,
     },
-    chip: {backgroundColor: theme.colors.primaryDark},
     chipContainer: {marginRight: 10, marginBottom: 16},
   });
 };

@@ -1,48 +1,51 @@
 //#region IMPORT
 //IMPORT MODULE
 import React from 'react';
-import {Text, View} from 'react-native';
+import {StyleProp, Text, View, ViewStyle} from 'react-native';
 import {useTheme} from 'react-native-paper';
 
 //IMPORT CONFIG
 import MChips from '../../../../../../components/MChips';
 import {ITheme} from '../../../../../../config/Theme.config';
-import getStyles from './HomeScreenSelectedSymptom.section.style';
+import getStyles from './HomeScreenSymptom.section.style';
 //#endregion
 
 //#region INTERFACE
 interface Props {
-  handleRemoveSymptom(symptom: string): void;
-  listSymptom: string[];
-  selectedSymptom: string[];
+  title: string;
+  filteredListSymptom: string[];
+  onClickSymptom(symptom: string): void;
+  chipIcon: string;
+  chipLabelColor: string;
+  chipStyle: StyleProp<ViewStyle>;
 }
 //#endregion
-const HomeScreenSelectedSymptom: React.FC<Props> = ({
-  handleRemoveSymptom,
-  listSymptom,
-  selectedSymptom,
+const HomeScreenSymptom: React.FC<Props> = ({
+  title,
+  onClickSymptom,
+  filteredListSymptom,
+  chipIcon,
+  chipLabelColor,
+  chipStyle,
 }: Props) => {
   //#region GENERAL
   const theme = (useTheme() as unknown) as ITheme;
   const style = getStyles(theme);
   //#endregion
 
-  const filteredListSymptom = listSymptom.filter((symptom) =>
-    selectedSymptom.includes(symptom),
-  );
   return (
     <View style={style.container}>
-      <Text style={style.title}> Selected symptoms and reasons</Text>
+      <Text style={style.title}> {title}</Text>
       <View style={style.containerSymptom}>
         {filteredListSymptom.map((symptom, index: number) => (
           <View style={style.chipContainer} key={`symptom-${index}`}>
             <MChips
-              containerStyle={style.chip}
+              containerStyle={chipStyle}
               label={symptom}
-              labelIcon={theme.colors.surface}
-              onClick={() => handleRemoveSymptom(symptom)}
-              icon={'check'}
-              iconColor={theme.colors.surface}
+              labelColor={chipLabelColor}
+              onClick={() => onClickSymptom(symptom)}
+              icon={chipIcon}
+              iconColor={chipLabelColor}
             />
           </View>
         ))}
@@ -51,4 +54,4 @@ const HomeScreenSelectedSymptom: React.FC<Props> = ({
   );
 };
 
-export default HomeScreenSelectedSymptom;
+export default HomeScreenSymptom;

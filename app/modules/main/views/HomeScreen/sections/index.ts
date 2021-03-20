@@ -1,11 +1,5 @@
 import HomeScreenSelectPatient from './HomeScreenSelectPatient';
 import HomeScreenReasonInput from './HomeScreenReasonInput';
-import HomeScreenChooseSymptom from './HomeScreenChooseSymptom';
-import HomeScreenSelectedSymptom from './HomeScreenSelectedSymptom';
+import HomeScreenSymptom from './HomeScreenSymptom';
 
-export {
-  HomeScreenSelectPatient,
-  HomeScreenReasonInput,
-  HomeScreenChooseSymptom,
-  HomeScreenSelectedSymptom,
-};
+export {HomeScreenSelectPatient, HomeScreenReasonInput, HomeScreenSymptom};

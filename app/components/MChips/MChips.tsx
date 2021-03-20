@@ -15,7 +15,7 @@ import getStyles from './MChips.style';
 
 interface Props {
   label: string;
-  labelIcon?: string;
+  labelColor?: string;
   onClick(): void;
   containerStyle?: StyleProp<ViewStyle>;
   isSelected?: boolean;
@@ -29,7 +29,7 @@ const MChips: React.FC<Props> = ({
   containerStyle,
   isSelected,
   icon,
-  labelIcon,
+  labelColor,
   iconColor,
 }: Props) => {
   //#region GENERAL
@@ -47,7 +47,7 @@ const MChips: React.FC<Props> = ({
       <Text
         style={StyleSheet.flatten([
           style.title,
-          {color: labelIcon || theme.colors.text},
+          {color: labelColor || theme.colors.text},
         ])}>
         {label}
       </Text>
