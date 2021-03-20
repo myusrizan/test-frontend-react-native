@@ -5,6 +5,7 @@ const theme: ITheme = {
   roundness: 4,
   colors: {
     primary: '#62cbc9',
+    primaryDark: '#23b4d3',
     primarySoft: '#e9f4ff',
     background: '#F8F8F8',
     surface: '#FFFFFF',
@@ -17,6 +18,7 @@ const theme: ITheme = {
     error: '#FF2F14',
     border: '#ECECEC',
     warning: '#f7c436',
+    success: '#4dcebc',
   },
 };
 
@@ -24,6 +26,7 @@ export type ITheme = {
   roundness: number;
   colors: {
     primary: string;
+    primaryDark: string;
     primarySoft: string;
     background: string;
     surface: string;
@@ -36,6 +39,7 @@ export type ITheme = {
     border: string;
     grey: string;
     warning: string;
+    success: string;
   };
 };
 

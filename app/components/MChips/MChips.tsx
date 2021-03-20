@@ -1,8 +1,9 @@
 //#region IMPORT
 // IMPORT MODULE
 import React from 'react';
-import {StyleProp, StyleSheet, Text, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, Text, TextStyle, ViewStyle} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import COMPONENT
 import {MButton} from '..';
@@ -14,9 +15,12 @@ import getStyles from './MChips.style';
 
 interface Props {
   label: string;
+  labelIcon?: string;
   onClick(): void;
   containerStyle?: StyleProp<ViewStyle>;
   isSelected?: boolean;
+  icon?: string;
+  iconColor?: string;
 }
 
 const MChips: React.FC<Props> = ({
@@ -24,6 +28,9 @@ const MChips: React.FC<Props> = ({
   onClick,
   containerStyle,
   isSelected,
+  icon,
+  labelIcon,
+  iconColor,
 }: Props) => {
   //#region GENERAL
   const theme = (useTheme() as unknown) as ITheme;
@@ -37,7 +44,16 @@ const MChips: React.FC<Props> = ({
         containerStyle,
       ])}
       action={onClick}>
-      <Text style={style.title}>{label}</Text>
+      <Text
+        style={StyleSheet.flatten([
+          style.title,
+          {color: labelIcon || theme.colors.text},
+        ])}>
+        {label}
+      </Text>
+      {icon && (
+        <Icon size={16} color={iconColor || theme.colors.text} name={icon} />
+      )}
     </MButton>
   );
 };

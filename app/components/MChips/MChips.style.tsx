@@ -11,10 +11,13 @@ interface Style {
 const getStyles = (theme?: ITheme) => {
   return StyleSheet.create<Style>({
     container: {
+      display: 'flex',
       borderRadius: 8,
+      flexDirection: 'row',
       backgroundColor: theme.colors.surface,
       paddingHorizontal: 8,
       paddingVertical: 10,
+      alignItems: 'center',
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -25,6 +28,9 @@ const getStyles = (theme?: ITheme) => {
       elevation: 6,
     },
     containerSelected: {
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row',
       borderRadius: 8,
       backgroundColor: theme.colors.surface,
       paddingHorizontal: 8,
@@ -43,7 +49,7 @@ const getStyles = (theme?: ITheme) => {
     selectionContainer: {display: 'flex', flexDirection: 'row'},
     title: {
       fontSize: 16,
-      color: theme.colors.text,
+      marginRight: 4,
     },
   });
 };
