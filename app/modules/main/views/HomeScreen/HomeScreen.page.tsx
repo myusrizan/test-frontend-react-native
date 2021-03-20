@@ -10,7 +10,11 @@ import MChips from '../../../../components/MChips';
 import {ITheme} from '../../../../config/Theme.config';
 // IMPORT CONFIG
 import {filterListSymptom} from '../../utils';
-import {SymptomBottomSheet, TimeBottomSheet} from './components';
+import {
+  PatientBottomSheet,
+  SymptomBottomSheet,
+  TimeBottomSheet,
+} from './components';
 import getStyles from './HomeScreen.page.style';
 import {
   HomeScreenReasonInput,
@@ -29,9 +33,13 @@ const HomeScreen: React.FC = () => {
   //#endregion
 
   //#region ADD PATIENT
-  const listPatient = ['Yarik Nikolenko', 'Julien Truman', 'Bronx Abigail'];
+  const [listPatient, setListPatient] = useState<string[]>([
+    'Yarik Nikolenko',
+    'Julien Truman',
+    'Bronx Abigail',
+  ]);
   const [selectedPatient, setSelectedPatient] = useState([]);
-  const handleAddPatient = (_patient: string): void => {
+  const handleSelectPatient = (_patient: string): void => {
     const isPatientExist = selectedPatient.includes(_patient);
     if (isPatientExist) {
       const currentPatient = selectedPatient.filter(
@@ -69,6 +77,7 @@ const HomeScreen: React.FC = () => {
   //#region BOTTOM SHEET
   const snapPoints = useMemo(() => ['25%', '80%'], []);
   const snapPointsTime = useMemo(() => ['25%', '50%'], []);
+  const snapPointsPatient = useMemo(() => ['25%', '40%'], []);
   //MODAL SYMPTOM
   const bottomSheetModalSymptomRef = useRef<BottomSheetModal>(null);
   const handlePresentModalSymptomOpen = useCallback(() => {
@@ -88,6 +97,21 @@ const HomeScreen: React.FC = () => {
     setScheduledTime(_date);
     bottomSheetModalTimeRef.current?.dismiss();
   }, []);
+
+  //MODAL PATIENT
+  const bottomSheetModalPatientRef = useRef<BottomSheetModal>(null);
+  const handlePresentModalPatientOpen = useCallback(() => {
+    bottomSheetModalPatientRef.current?.present();
+  }, []);
+  const handlePresentModalPatientClose = useCallback(
+    (patient: string) => {
+      const newListPatient = [...listPatient, patient];
+      setListPatient(newListPatient);
+
+      bottomSheetModalPatientRef.current?.dismiss();
+    },
+    [listPatient],
+  );
   //#endregion
 
   return (
@@ -112,7 +136,8 @@ const HomeScreen: React.FC = () => {
             <HomeScreenSelectPatient
               listPatient={listPatient}
               selectedPatient={selectedPatient}
-              handleAddPatient={handleAddPatient}
+              handleSelectPatient={handleSelectPatient}
+              handleAddPatient={handlePresentModalPatientOpen}
             />
           </View>
           <View style={styles.section}>
@@ -187,6 +212,16 @@ const HomeScreen: React.FC = () => {
         <TimeBottomSheet
           scheduledTime={scheduledTime}
           handlePresentModalTimeClose={handlePresentModalTimeClose}
+        />
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        backdropComponent={() => <View style={styles.backdrop} />}
+        ref={bottomSheetModalPatientRef}
+        index={1}
+        snapPoints={snapPointsPatient}>
+        <PatientBottomSheet
+          handlePresentModalPatientClose={handlePresentModalPatientClose}
         />
       </BottomSheetModal>
     </BottomSheetModalProvider>

@@ -14,13 +14,15 @@ import getStyles from './HomeScreenSelectPatient.section.style';
 interface Props {
   listPatient: string[];
   selectedPatient: string[];
-  handleAddPatient(patient: string): void;
+  handleAddPatient(): void;
+  handleSelectPatient(patient: string): void;
 }
 //#endregion
 
 const HomeScreenSelectPatient: React.FC<Props> = ({
   listPatient,
   selectedPatient,
+  handleSelectPatient,
   handleAddPatient,
 }: Props) => {
   //#region GENERAL
@@ -35,7 +37,7 @@ const HomeScreenSelectPatient: React.FC<Props> = ({
       isSelected={selectedPatient.includes(item)}
       label={item}
       containerStyle={style.listItem}
-      onClick={() => handleAddPatient(item)}
+      onClick={() => handleSelectPatient(item)}
     />
   );
   //#endregion
@@ -47,7 +49,7 @@ const HomeScreenSelectPatient: React.FC<Props> = ({
           <MChips
             containerStyle={style.addChips}
             label="Add"
-            onClick={() => console.log('Add clicked')}
+            onClick={handleAddPatient}
           />
         </View>
         <FlatList
