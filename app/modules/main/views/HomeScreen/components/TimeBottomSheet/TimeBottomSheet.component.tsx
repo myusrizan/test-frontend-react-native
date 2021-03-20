@@ -1,28 +1,28 @@
-import React from 'react';
-import {View, Text} from 'react-native';
-import {TextInput, useTheme} from 'react-native-paper';
+//#region IMPORT
+// IMPORT MODULE
+import React, {useState} from 'react';
+import {Text, View} from 'react-native';
+import {useTheme} from 'react-native-paper';
+import DatePicker from 'react-native-date-picker';
+// IMPORT COMPONENT
 import MChips from '../../../../../../components/MChips';
-import {ITheme} from '../../../../../../config/Theme.config';
-import {filterListSymptom} from '../../../../utils';
-import {HomeScreenSymptom} from '../../sections';
-import getStyles from './TimeBottomSheet.component.style';
 
+// IMPORT CONFIG
+import {ITheme} from '../../../../../../config/Theme.config';
+import getStyles from './TimeBottomSheet.component.style';
+//#endregion
 interface Props {
-  selectedSymptom: string[];
-  listSymptom: string[];
-  handleRemoveSymptom(symptom: string): void;
-  handleAddSymptom(symptom: string): void;
-  handlePresentModalTimeClose(): void;
+  handlePresentModalTimeClose(date: Date): void;
+  scheduledTime: Date;
 }
 
 const TimeBottomSheet: React.FC<Props> = ({
-  selectedSymptom,
-  listSymptom,
-  handleRemoveSymptom,
-  handleAddSymptom,
   handlePresentModalTimeClose,
+  scheduledTime,
 }: Props) => {
   //#region GENERAL
+  const [selectedTime, setSelectedTime] = useState(scheduledTime || new Date());
+  const currentDate = new Date();
   const theme = (useTheme() as unknown) as ITheme;
   const styles = getStyles(theme);
   //#endregion
@@ -31,49 +31,20 @@ const TimeBottomSheet: React.FC<Props> = ({
     <View style={styles.container}>
       <View style={styles.containerBottomSheet}>
         <View style={styles.bottomSheetInputContainer}>
-          <Text style={styles.bottomSheetTitle}>Symptoms & Conditions</Text>
+          <Text style={styles.bottomSheetTitle}>Schedule appointment</Text>
           <Text style={styles.bottomSheetSubtitle}>
-            Please specify your symptoms:
+            Please select date and time window
           </Text>
-          <TextInput
-            mode="outlined"
-            style={styles.bottomSheetInput}
-            theme={{
-              colors: {
-                text: theme.colors.text,
-                placeholder: theme.colors.placeHolder,
-              },
-            }}
-            placeholder="e.g. Cough"
-          />
         </View>
-        {selectedSymptom && selectedSymptom.length > 0 && (
-          <View style={styles.section}>
-            <HomeScreenSymptom
-              title="Selected symptom:"
-              onClickSymptom={handleRemoveSymptom}
-              filteredListSymptom={filterListSymptom(
-                selectedSymptom,
-                listSymptom,
-                true,
-              )}
-              chipIcon="check"
-              chipLabelColor={theme.colors.surface}
-              chipStyle={styles.selectedSymptomChip}
-            />
-          </View>
-        )}
-        <View style={styles.section}>
-          <HomeScreenSymptom
-            title="Choose your symptom:"
-            onClickSymptom={handleAddSymptom}
-            filteredListSymptom={filterListSymptom(
-              selectedSymptom,
-              listSymptom,
-            )}
-            chipIcon="plus"
-            chipLabelColor={theme.colors.primary}
-            chipStyle={styles.listSymptomChip}
+        <View style={styles.containerDatePicker}>
+          <DatePicker
+            style={styles.datePicker}
+            date={selectedTime}
+            minimumDate={currentDate}
+            androidVariant="iosClone"
+            mode="datetime"
+            minuteInterval={30}
+            onDateChange={(e) => setSelectedTime(e)}
           />
         </View>
       </View>
@@ -82,7 +53,7 @@ const TimeBottomSheet: React.FC<Props> = ({
           label="Done"
           labelColor={theme.colors.primary}
           containerStyle={styles.actionButtonBottomSheet}
-          onClick={handlePresentModalTimeClose}
+          onClick={() => handlePresentModalTimeClose(selectedTime)}
         />
       </View>
     </View>

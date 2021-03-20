@@ -2,7 +2,7 @@
 // IMPORT MODULE
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {SafeAreaView, StatusBar, Text, View} from 'react-native';
+import {SafeAreaView, StatusBar, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
 // IMPORT COMPONENT
 import {MHeader, MSwitch} from '../../../../components';
@@ -10,7 +10,7 @@ import MChips from '../../../../components/MChips';
 import {ITheme} from '../../../../config/Theme.config';
 // IMPORT CONFIG
 import {filterListSymptom} from '../../utils';
-import {SymptomBottomSheet} from './components';
+import {SymptomBottomSheet, TimeBottomSheet} from './components';
 import getStyles from './HomeScreen.page.style';
 import {
   HomeScreenReasonInput,
@@ -25,7 +25,7 @@ const HomeScreen: React.FC = () => {
   const theme = (useTheme() as unknown) as ITheme;
   const styles = getStyles(theme);
   const [reason, setReason] = useState('');
-
+  const [scheduledTime, setScheduledTime] = useState<Date>(undefined);
   //#endregion
 
   //#region ADD PATIENT
@@ -79,15 +79,14 @@ const HomeScreen: React.FC = () => {
     setReason(_input);
   }, []);
 
-  console.log({reason});
-
   //MODAL TIME
   const bottomSheetModalTimeRef = useRef<BottomSheetModal>(null);
   const handlePresentModalTimeOpen = useCallback(() => {
     bottomSheetModalTimeRef.current?.present();
   }, []);
-  const handlePresentModalTimeClose = useCallback(() => {
-    bottomSheetModalTimeRef.current?.present();
+  const handlePresentModalTimeClose = useCallback((_date: Date) => {
+    setScheduledTime(_date);
+    bottomSheetModalTimeRef.current?.dismiss();
   }, []);
   //#endregion
 
@@ -119,6 +118,7 @@ const HomeScreen: React.FC = () => {
           <View style={styles.section}>
             <HomeScreenReasonInput
               reason={reason}
+              scheduledTime={scheduledTime}
               onClickReason={handlePresentModalSymptomOpen}
               onClickTime={handlePresentModalTimeOpen}
             />
@@ -184,24 +184,10 @@ const HomeScreen: React.FC = () => {
         ref={bottomSheetModalTimeRef}
         index={1}
         snapPoints={snapPointsTime}>
-        <View style={styles.container}>
-          <View style={styles.containerBottomSheet}>
-            <View style={styles.bottomSheetInputContainer}>
-              <Text style={styles.bottomSheetTitle}>Schedule appointment</Text>
-              <Text style={styles.bottomSheetSubtitle}>
-                Please select date and time window
-              </Text>
-            </View>
-          </View>
-          <View style={styles.action}>
-            <MChips
-              label="Done"
-              labelColor={theme.colors.primary}
-              containerStyle={styles.actionButtonBottomSheet}
-              onClick={handlePresentModalTimeClose}
-            />
-          </View>
-        </View>
+        <TimeBottomSheet
+          scheduledTime={scheduledTime}
+          handlePresentModalTimeClose={handlePresentModalTimeClose}
+        />
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );

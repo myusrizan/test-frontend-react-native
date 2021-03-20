@@ -7,6 +7,7 @@ interface Style {
   buttonTimeContainer: ViewStyle;
   buttonTimeText: TextStyle;
   buttonAddSymptom: ViewStyle;
+  buttonTimeContainerSelected: ViewStyle;
   buttonAddSymptomText: TextStyle;
 }
 
@@ -32,6 +33,15 @@ const getStyles = (theme?: ITheme) => {
       alignItems: 'center',
       display: 'flex',
       flexDirection: 'row',
+    },
+    buttonTimeContainerSelected: {
+      display: 'flex',
+      flexDirection: 'row',
+      margin: 10,
+      backgroundColor: theme.colors.primary,
+      alignItems: 'center',
+      padding: 8,
+      borderRadius: 10,
     },
     buttonTimeContainer: {
       display: 'flex',

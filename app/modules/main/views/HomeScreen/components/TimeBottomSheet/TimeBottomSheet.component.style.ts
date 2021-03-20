@@ -1,17 +1,16 @@
 import {StyleSheet, TextStyle, ViewStyle} from 'react-native';
+import {dimensions} from '../../../../../../config/Dimension.config';
 import {ITheme} from '../../../../../../config/Theme.config';
 interface Style {
   container: ViewStyle;
-  section: ViewStyle;
-  listSymptomChip: ViewStyle;
-  selectedSymptomChip: ViewStyle;
   containerBottomSheet: ViewStyle;
   bottomSheetInputContainer: ViewStyle;
   bottomSheetTitle: TextStyle;
   bottomSheetSubtitle: TextStyle;
   actionButtonBottomSheet: ViewStyle;
-  bottomSheetInput: ViewStyle;
   action: ViewStyle;
+  containerDatePicker: ViewStyle;
+  datePicker: ViewStyle;
 }
 
 const getStyles = (theme?: ITheme) => {
@@ -25,21 +24,16 @@ const getStyles = (theme?: ITheme) => {
     bottomSheetInputContainer: {marginHorizontal: 16, marginTop: 8},
     bottomSheetTitle: {fontWeight: '600', fontSize: 18},
     bottomSheetSubtitle: {letterSpacing: 0.5, color: theme.colors.text},
-    bottomSheetInput: {
-      backgroundColor: theme.colors.primarySoft,
-    },
     actionButtonBottomSheet: {
       justifyContent: 'center',
     },
-    section: {
-      marginHorizontal: 16,
-      marginTop: 16,
+    containerDatePicker: {
+      paddingTop: 20,
     },
+    datePicker: {width: dimensions.width, height: 300},
     action: {
       margin: 16,
     },
-    listSymptomChip: {},
-    selectedSymptomChip: {backgroundColor: theme.colors.primaryDark},
   });
 };
 
