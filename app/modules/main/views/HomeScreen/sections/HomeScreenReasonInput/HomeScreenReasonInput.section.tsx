@@ -12,11 +12,13 @@ import getStyles from './HomeScreenReasonInput.section.style';
 
 //#region INTERFACE
 interface Props {
+  reason?: string;
   onClickReason(): void;
   onClickTime(): void;
 }
 //#endregion
 const HomeScreenSelectPatient: React.FC<Props> = ({
+  reason,
   onClickReason,
   onClickTime,
 }: Props) => {
@@ -30,7 +32,13 @@ const HomeScreenSelectPatient: React.FC<Props> = ({
         <View style={style.buttonContainer}>
           <View style={style.buttonAddSymptom}>
             <Icon name="magnify" size={25} color={theme.colors.primary} />
-            <Text style={style.buttonAddSymptomText}>Add reasons</Text>
+            <Text style={style.buttonAddSymptomText}>
+              {!reason
+                ? 'Add reasons'
+                : reason.length > 20
+                ? `${reason.substr(0, 20)}...`
+                : reason}
+            </Text>
           </View>
           <MButton action={onClickTime}>
             <View style={style.buttonTimeContainer}>

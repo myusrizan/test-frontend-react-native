@@ -10,6 +10,7 @@ import MChips from '../../../../components/MChips';
 import {ITheme} from '../../../../config/Theme.config';
 // IMPORT CONFIG
 import {filterListSymptom} from '../../utils';
+import {SymptomBottomSheet} from './components';
 import getStyles from './HomeScreen.page.style';
 import {
   HomeScreenReasonInput,
@@ -23,6 +24,7 @@ const HomeScreen: React.FC = () => {
   //#region GENERAL
   const theme = (useTheme() as unknown) as ITheme;
   const styles = getStyles(theme);
+  const [reason, setReason] = useState('');
 
   //#endregion
 
@@ -65,15 +67,26 @@ const HomeScreen: React.FC = () => {
   };
   //#endregion
   //#region BOTTOM SHEET
-  const snapPoints = useMemo(() => ['25%', '60%'], []);
+  const snapPoints = useMemo(() => ['25%', '80%'], []);
+  const snapPointsTime = useMemo(() => ['25%', '50%'], []);
   //MODAL SYMPTOM
   const bottomSheetModalSymptomRef = useRef<BottomSheetModal>(null);
-  const handlePresentModalSymptomPress = useCallback(() => {
+  const handlePresentModalSymptomOpen = useCallback(() => {
     bottomSheetModalSymptomRef.current?.present();
   }, []);
+  const handlePresentModalSymptomClose = useCallback((_input: string) => {
+    bottomSheetModalSymptomRef.current?.dismiss();
+    setReason(_input);
+  }, []);
+
+  console.log({reason});
+
   //MODAL TIME
   const bottomSheetModalTimeRef = useRef<BottomSheetModal>(null);
-  const handlePresentModalTimePress = useCallback(() => {
+  const handlePresentModalTimeOpen = useCallback(() => {
+    bottomSheetModalTimeRef.current?.present();
+  }, []);
+  const handlePresentModalTimeClose = useCallback(() => {
     bottomSheetModalTimeRef.current?.present();
   }, []);
   //#endregion
@@ -105,8 +118,9 @@ const HomeScreen: React.FC = () => {
           </View>
           <View style={styles.section}>
             <HomeScreenReasonInput
-              onClickReason={handlePresentModalSymptomPress}
-              onClickTime={handlePresentModalTimePress}
+              reason={reason}
+              onClickReason={handlePresentModalSymptomOpen}
+              onClickTime={handlePresentModalTimeOpen}
             />
           </View>
           {selectedSymptom && selectedSymptom.length > 0 && (
@@ -155,46 +169,38 @@ const HomeScreen: React.FC = () => {
         backdropComponent={() => <View style={styles.backdrop} />}
         index={1}
         snapPoints={snapPoints}>
-        <View style={styles.container}>
-          {selectedSymptom && selectedSymptom.length > 0 && (
-            <View style={styles.section}>
-              <HomeScreenSymptom
-                title="Selected symptom:"
-                onClickSymptom={handleRemoveSymptom}
-                filteredListSymptom={filterListSymptom(
-                  selectedSymptom,
-                  listSymptom,
-                  true,
-                )}
-                chipIcon="check"
-                chipLabelColor={theme.colors.surface}
-                chipStyle={styles.selectedSymptomChip}
-              />
-            </View>
-          )}
-          <View style={styles.section}>
-            <HomeScreenSymptom
-              title="Choose your symptom:"
-              onClickSymptom={handleAddSymptom}
-              filteredListSymptom={filterListSymptom(
-                selectedSymptom,
-                listSymptom,
-              )}
-              chipIcon="plus"
-              chipLabelColor={theme.colors.primary}
-              chipStyle={styles.listSymptomChip}
-            />
-          </View>
-        </View>
+        <SymptomBottomSheet
+          reason={reason}
+          selectedSymptom={selectedSymptom}
+          listSymptom={listSymptom}
+          handleRemoveSymptom={handleRemoveSymptom}
+          handleAddSymptom={handleAddSymptom}
+          handlePresentModalSymptomClose={handlePresentModalSymptomClose}
+        />
       </BottomSheetModal>
 
       <BottomSheetModal
         backdropComponent={() => <View style={styles.backdrop} />}
         ref={bottomSheetModalTimeRef}
         index={1}
-        snapPoints={snapPoints}>
+        snapPoints={snapPointsTime}>
         <View style={styles.container}>
-          <Text>Awesime 🎉</Text>
+          <View style={styles.containerBottomSheet}>
+            <View style={styles.bottomSheetInputContainer}>
+              <Text style={styles.bottomSheetTitle}>Schedule appointment</Text>
+              <Text style={styles.bottomSheetSubtitle}>
+                Please select date and time window
+              </Text>
+            </View>
+          </View>
+          <View style={styles.action}>
+            <MChips
+              label="Done"
+              labelColor={theme.colors.primary}
+              containerStyle={styles.actionButtonBottomSheet}
+              onClick={handlePresentModalTimeClose}
+            />
+          </View>
         </View>
       </BottomSheetModal>
     </BottomSheetModalProvider>

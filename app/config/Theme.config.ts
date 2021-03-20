@@ -4,6 +4,7 @@ const theme: ITheme = {
   ...DefaultTheme,
   roundness: 4,
   colors: {
+    placeHolder: '#88929f',
     primary: '#62cbc9',
     primaryDark: '#23b4d3',
     primarySoft: '#e9f4ff',
@@ -25,6 +26,7 @@ const theme: ITheme = {
 export type ITheme = {
   roundness: number;
   colors: {
+    placeHolder: string;
     primary: string;
     primaryDark: string;
     primarySoft: string;
