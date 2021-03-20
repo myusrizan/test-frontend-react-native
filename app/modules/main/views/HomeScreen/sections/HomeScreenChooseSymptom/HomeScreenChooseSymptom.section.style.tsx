@@ -3,49 +3,27 @@ import {ITheme} from '../../../../../../config/Theme.config';
 
 interface Style {
   container: ViewStyle;
-  buttonContainer: ViewStyle;
-  buttonTimeContainer: ViewStyle;
-  buttonTimeText: TextStyle;
-  buttonAddSymptom: ViewStyle;
-  buttonAddSymptomText: TextStyle;
+  containerSymptom: ViewStyle;
+  title: TextStyle;
+  chip: ViewStyle;
+  chipContainer: ViewStyle;
 }
 
 const getStyles = (theme?: ITheme) => {
   return StyleSheet.create<Style>({
-    container: {
-      borderRadius: 10,
-      backgroundColor: theme.colors.primarySoft,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-    },
-    buttonAddSymptomText: {
-      marginLeft: 10,
-    },
-    buttonContainer: {
+    container: {},
+    containerSymptom: {
+      marginTop: 20,
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center',
+      flexWrap: 'wrap',
     },
-    buttonAddSymptom: {
-      marginLeft: 20,
-      flex: 1,
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'row',
+    title: {
+      fontSize: 16,
+      color: theme.colors.text,
     },
-    buttonTimeContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      margin: 10,
-      backgroundColor: theme.colors.warning,
-      alignItems: 'center',
-      padding: 8,
-      borderRadius: 10,
-    },
-    buttonTimeText: {
-      marginHorizontal: 8,
-      color: theme.colors.surface,
-    },
+    chip: {backgroundColor: theme.colors.primaryDark},
+    chipContainer: {marginRight: 10, marginBottom: 16},
   });
 };
 

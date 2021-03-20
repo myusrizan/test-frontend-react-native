@@ -35,11 +35,16 @@ const HomeScreenChooseSymptom: React.FC<Props> = ({
       <Text style={style.title}> Choose your symptoms and reasons</Text>
       <View style={style.containerSymptom}>
         {filteredListSymptom.map((symptom, index: number) => (
-          <MChips
-            key={`symptom-${index}`}
-            label={symptom}
-            onClick={() => handleAddSymptom(symptom)}
-          />
+          <View style={style.chipContainer} key={`symptom-${index}`}>
+            <MChips
+              key={`symptom-${index}`}
+              label={symptom}
+              icon={'plus'}
+              labelIcon={theme.colors.primary}
+              iconColor={theme.colors.primary}
+              onClick={() => handleAddSymptom(symptom)}
+            />
+          </View>
         ))}
       </View>
     </View>
