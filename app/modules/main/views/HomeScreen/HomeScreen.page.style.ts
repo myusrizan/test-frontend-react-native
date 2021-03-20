@@ -4,7 +4,7 @@ import {ITheme} from '../../../../config/Theme.config';
 interface Style {
   container: ViewStyle;
   switchContainer: ViewStyle;
-  selectPatientContainer: ViewStyle;
+  section: ViewStyle;
 }
 
 const getStyles = (theme?: ITheme) => {
@@ -16,7 +16,7 @@ const getStyles = (theme?: ITheme) => {
     switchContainer: {
       alignSelf: 'center',
     },
-    selectPatientContainer: {
+    section: {
       marginHorizontal: 16,
       marginTop: 16,
     },

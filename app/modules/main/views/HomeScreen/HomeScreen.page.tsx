@@ -8,7 +8,7 @@ import {StatusBar, SafeAreaView, View} from 'react-native';
 import {MHeader, MSwitch} from '../../../../components';
 import {ITheme} from '../../../../config/Theme.config';
 import getStyles from './HomeScreen.page.style';
-import {HomeScreenSelectPatient} from './sections';
+import {HomeScreenReasonInput, HomeScreenSelectPatient} from './sections';
 //#endregion
 
 const HomeScreen: React.FC = () => {
@@ -30,8 +30,14 @@ const HomeScreen: React.FC = () => {
       <View style={style.switchContainer}>
         <MSwitch labelA="Doctor" labelB="Video Consult" />
       </View>
-      <View style={style.selectPatientContainer}>
+      <View style={style.section}>
         <HomeScreenSelectPatient />
+      </View>
+      <View style={style.section}>
+        <HomeScreenReasonInput
+          onClickReason={() => console.log('click reason')}
+          onClickTime={() => console.log('click time')}
+        />
       </View>
     </SafeAreaView>
   );

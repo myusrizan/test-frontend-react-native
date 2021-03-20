@@ -13,7 +13,7 @@ interface Style {
 const getStyles = (theme?: ITheme) => {
   return StyleSheet.create<Style>({
     container: {backgroundColor: theme.colors.surface},
-    selectionContainer: {display: 'flex', flexDirection: 'row'},
+    selectionContainer: {display: 'flex', flexDirection: 'row', paddingTop: 10},
     addChips: {paddingHorizontal: 40, margin: 8},
     addChipsWrapper: {
       borderStyle: 'dotted',
